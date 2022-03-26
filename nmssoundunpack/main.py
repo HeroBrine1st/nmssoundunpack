@@ -14,7 +14,7 @@ from rich.text import Text
 
 from nmssoundunpack.lib import PSArc, get_psarc_paths, count_files_in_psarc, unpack_psarc, get_wem_file_path, \
     process_wem_file
-from fill_remaining_progress_column import FillRemainingProgressColumn
+from nmssoundunpack.fill_remaining_progress_column import FillRemainingProgressColumn
 
 psarcs: list[PSArc] = [
     PSArc("NMSARC.5B11B94C.pak", "AUDIO/WINDOWS"),
