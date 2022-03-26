@@ -79,7 +79,7 @@ def main(source: Path, destination: Path, tmp: Path, keep: bool):
                         # region On collision
                         elif files[converted_path] != wem_path:
                             dict_file_md5 = md5_of_file(files[converted_path], progress)
-                            this_file_md5 = md5_of_file(files[converted_path], progress)
+                            this_file_md5 = md5_of_file(wem_path, progress)
                             if dict_file_md5.digest() != this_file_md5.digest():  # Just in case
                                 console.print(f"File {converted_path} has collision:")
                                 console.print(files[converted_path])
