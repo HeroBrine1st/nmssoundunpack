@@ -68,7 +68,7 @@ def main():
             console.print(f"Skipping \"{psarc.name}\"")
 
     files: Dict[Path, Path] = {}
-    with Progress(*get_progress_bar_columns(), console=console) as progress:
+    with Progress(*get_progress_bar_columns(), console=console, expand=True) as progress:
         console.print("Constructing source-destination pairs")
         task = progress.add_task("Constructing source-destination pairs", total=len(psarcs), start=False)
         for psarc in psarcs:
@@ -126,7 +126,7 @@ def main():
     with Progress(
             *get_progress_bar_columns(True),
             TextColumn("{task.completed}/{task.total}"),
-            console=console) as progress:
+            console=console, expand=True) as progress:
         task = progress.add_task("Converting files", total=len(files))
         for destination in files:
             source = files[destination]
