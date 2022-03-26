@@ -23,10 +23,18 @@ psarcs: list[PSArc] = [
 run = True
 
 def get_progress_bar_columns(with_complete_column: bool = False) -> Tuple[ProgressColumn, ...]:
-    return (TextColumn("[progress.description]{task.description}"),
-            BarColumn(bar_width=None),
-            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-            TimeRemainingColumn()) + (MofNCompleteColumn(),) if with_complete_column else ()
+    # I couldn't conditionally add element and thus make code smaller due to strange bug, so..
+    if with_complete_column:
+        return (TextColumn("[progress.description]{task.description}"),
+                BarColumn(bar_width=None),
+                TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+                TimeRemainingColumn(),
+                MofNCompleteColumn())
+    else:
+        return (TextColumn("[progress.description]{task.description}"),
+                BarColumn(bar_width=None),
+                TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+                TimeRemainingColumn())
 
 def main():
     args = parser.parse_args()
