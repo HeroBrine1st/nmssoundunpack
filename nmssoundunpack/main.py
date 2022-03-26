@@ -133,7 +133,6 @@ def main():
 
     with Progress(
             *get_progress_bar_columns(True),
-            TextColumn("{task.completed}/{task.total}"),
             console=console, expand=True) as progress:
         task = progress.add_task("Converting files", total=len(files))
         for destination in files:
