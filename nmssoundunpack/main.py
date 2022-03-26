@@ -14,7 +14,6 @@ from rich.text import Text
 
 from nmssoundunpack.lib import PSArc, get_psarc_paths, count_files_in_psarc, unpack_psarc, get_wem_file_path, \
     process_wem_file
-from nmssoundunpack.fill_remaining_progress_column import FillRemainingProgressColumn
 
 psarcs: list[PSArc] = [
     PSArc("NMSARC.5B11B94C.pak", "AUDIO/WINDOWS"),
@@ -25,8 +24,7 @@ run = True
 
 def get_progress_bar_columns(with_complete_column: bool = False) -> Tuple[ProgressColumn, ...]:
     return (TextColumn("[progress.description]{task.description}"),
-            FillRemainingProgressColumn(),
-            BarColumn(),
+            BarColumn(bar_width=None),
             TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
             TimeRemainingColumn()) + (MofNCompleteColumn(),) if with_complete_column else ()
 
