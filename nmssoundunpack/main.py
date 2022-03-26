@@ -34,6 +34,7 @@ def main():
         psarc_path = source / psarc.name
         if not psarc_path.exists():
             print(f"File {psarc_path} is not found in {source}")
+            print("Tip: run with --help to view help")
             exit(1)
 
     console = Console()
@@ -83,7 +84,8 @@ def main():
                             dict_file_md5 = md5_of_file(files[converted_path], progress)
                             this_file_md5 = md5_of_file(wem_path, progress)
                             if dict_file_md5.digest() != this_file_md5.digest():  # Just in case
-                                console.print(Text("File ").append(stylize_path(converted_path)).append(" has collision:"))
+                                console.print(
+                                    Text("File ").append(stylize_path(converted_path)).append(" has collision:"))
                                 console.print(stylize_path(files[converted_path]))
                                 console.print(stylize_path(wem_path))
                                 counter = 1
@@ -183,12 +185,14 @@ def stylize_path(path: Path) -> Text:
     return parent.append(filename)
 
 parser = argparse.ArgumentParser(description="Unpack, convert and catalog No Man's Sky sound assets")
-parser.add_argument("--source", type=dir_path, default=os.getcwd(),
+parser.add_argument("--source", type=dir_path, default=os.getcwd(), metavar="path",
                     help="Source directory (usually game installation directory plus GAMEDATA/PCBANKS)")
-parser.add_argument("--destination", type=new_dir_path, default=os.getcwd(), help="Destination directory")
-parser.add_argument("--tmp", type=new_dir_path,
+parser.add_argument("--destination", type=new_dir_path, default=os.getcwd(), metavar="path",
+                    help="Destination directory")
+parser.add_argument("--tmp", type=new_dir_path, metavar="path",
                     help="Temporary directory to unpack archives")
-parser.add_argument("-k", "--keep", type=bool, default=False, dest="keep", help="Keep temporary files")
+parser.add_argument("-k", "--keep", action="store_const", const=True, default=False, dest="keep",
+                    help="Keep temporary files")
 
 if __name__ == "__main__":
     main()
