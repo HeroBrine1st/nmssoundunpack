@@ -3,3 +3,4 @@ venv
 data
 nmssoundunpack.egg-info
 build
+__pycache__

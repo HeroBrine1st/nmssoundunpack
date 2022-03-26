@@ -1,2 +1,2 @@
-from main import main
-from lib import *
+from nmssoundunpack.main import main
+from nmssoundunpack.lib import *
