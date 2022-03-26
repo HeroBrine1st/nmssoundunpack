@@ -4,16 +4,17 @@ import os.path
 import shutil
 import signal
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Tuple
 
 import xmltodict
 from rich.console import Console
-from rich.progress import Progress, TextColumn
+from rich.progress import Progress, TextColumn, MofNCompleteColumn, BarColumn, TimeRemainingColumn, ProgressColumn
 from rich.table import Table
 from rich.text import Text
 
 from nmssoundunpack.lib import PSArc, get_psarc_paths, count_files_in_psarc, unpack_psarc, get_wem_file_path, \
     process_wem_file
+from fill_remaining_progress_column import FillRemainingProgressColumn
 
 psarcs: list[PSArc] = [
     PSArc("NMSARC.5B11B94C.pak", "AUDIO/WINDOWS"),
@@ -21,6 +22,13 @@ psarcs: list[PSArc] = [
 ]
 
 run = True
+
+def get_progress_bar_columns(with_complete_column: bool = False) -> Tuple[ProgressColumn, ...]:
+    return (TextColumn("[progress.description]{task.description}"),
+            FillRemainingProgressColumn(),
+            BarColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            TimeRemainingColumn()) + (MofNCompleteColumn(),) if with_complete_column else ()
 
 def main():
     args = parser.parse_args()
@@ -41,9 +49,9 @@ def main():
 
     if not all(get_psarc_paths(psarc, source, tmp)[1].is_dir() for psarc in psarcs):
         with Progress(  # It leaves empty line if no tasks were created
-                *Progress.get_default_columns(),
-                TextColumn("{task.completed}/{task.total}"),
-                console=console) as progress:
+                *get_progress_bar_columns(True),
+                console=console,
+                expand=True) as progress:
             for psarc in psarcs:
                 psarc_path, unpack_dir = get_psarc_paths(psarc, source, tmp)
                 if unpack_dir.is_dir():
@@ -62,7 +70,7 @@ def main():
             console.print(f"Skipping \"{psarc.name}\"")
 
     files: Dict[Path, Path] = {}
-    with Progress(console=console) as progress:
+    with Progress(*get_progress_bar_columns(), console=console) as progress:
         console.print("Constructing source-destination pairs")
         task = progress.add_task("Constructing source-destination pairs", total=len(psarcs), start=False)
         for psarc in psarcs:
@@ -118,7 +126,7 @@ def main():
     skipped = 0
 
     with Progress(
-            *Progress.get_default_columns(),
+            *get_progress_bar_columns(True),
             TextColumn("{task.completed}/{task.total}"),
             console=console) as progress:
         task = progress.add_task("Converting files", total=len(files))
