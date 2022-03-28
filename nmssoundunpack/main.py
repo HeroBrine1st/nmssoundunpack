@@ -17,8 +17,13 @@ from nmssoundunpack.lib import PSArc, get_psarc_paths, count_files_in_psarc, unp
 
 psarcs: list[PSArc] = [
     PSArc("NMSARC.5B11B94C.pak", "AUDIO/WINDOWS"),
+]
+
+psarcs_old: list[PSArc] = [
+    PSArc("NMSARC.5B11B94C.pak", "AUDIO/WINDOWS"),
     PSArc("NMSARC.FE28D146.pak", "AUDIO")
 ]
+
 
 run = True
 
@@ -43,8 +48,9 @@ def main():
     tmp = Path.cwd() / Path(args.tmp) if args.tmp is not None else destination / Path(
         __file__).parent.name
     keep = args.keep
+    old = args.old
 
-    for psarc in psarcs:
+    for psarc in (psarcs_old if old else psarcs):
         psarc_path = source / psarc.name
         if not psarc_path.exists():
             print(f"File {psarc_path} is not found in {source}")
@@ -206,6 +212,8 @@ parser.add_argument("--tmp", type=new_dir_path, metavar="path",
                     help="Temporary directory to unpack archives")
 parser.add_argument("-k", "--keep", action="store_const", const=True, default=False, dest="keep",
                     help="Keep temporary files")
+parser.add_argument("--old", action="store_const", const=True, default=False, dest="old",
+                    help="Enable compatibility for older versions")
 
 if __name__ == "__main__":
     main()
