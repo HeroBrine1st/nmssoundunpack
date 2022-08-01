@@ -2,7 +2,7 @@
 import os
 from distutils.core import setup
 
-# https://stackoverflow.com/a/53069528\
+# https://stackoverflow.com/a/53069528
 lib_folder = os.path.dirname(os.path.realpath(__file__))
 requirement_path = lib_folder + '/requirements.txt'
 install_requires = []
