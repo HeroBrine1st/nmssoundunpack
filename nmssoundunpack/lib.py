@@ -65,12 +65,13 @@ def unpack_psarc(psarc_path: Path, unpack_dir: Path, on_line: Callable[[str], No
     try:
         unpack_dir.mkdir(parents=True, exist_ok=True)
         command = [get_tool("psarc.exe"), "extract", os.fspath(psarc_path)]
-        p = subprocess.Popen(command, stdout=subprocess.PIPE, cwd=os.fspath(unpack_dir), bufsize=1, text=True)
+        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=os.fspath(unpack_dir), bufsize=1, text=True)
         while line := p.stdout.readline():
             on_line(line)
         p.stdout.close()
         if (return_code := p.wait()) != 0:
             print(f"Command {command} returned non-zero status code {return_code}")
+            print(p.stderr.read(), file=sys.stderr)
             exit(return_code)
     except BaseException:
         shutil.rmtree(unpack_dir)  # Likely corrupted
@@ -94,5 +95,4 @@ def process_wem_file(source: Path, destination: Path):
         run_exe([get_tool("revorb.exe"), os.fspath(destination)], no_exit=True)
     except BaseException:
         destination.unlink(missing_ok=True)
-        print(f"File {destination} deleted due to an error")
         raise
