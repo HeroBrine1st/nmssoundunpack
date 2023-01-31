@@ -82,7 +82,7 @@ def main():
                 psarc_path, unpack_dir = get_psarc_paths(psarc, source, tmp)
                 if unpack_dir.is_dir():
                     if (unpack_dir / "COMPLETE").is_file():
-                        console.print(f"Skipping \"{psarc.name}\"")
+                        console.print(f"Skipping extraction of \"{psarc.name}\"")
                         continue
                     else:
                         shutil.rmtree(unpack_dir)
@@ -102,7 +102,7 @@ def main():
                 (unpack_dir / "COMPLETE").touch()
     else:
         for psarc in psarcs:
-            console.print(f"Skipping \"{psarc.name}\"")
+            console.print(f"Skipping extraction of \"{psarc.name}\"")
 
     files: Dict[Path, Path] = {}
     with Progress(*get_progress_bar_columns(), console=console, expand=True) as progress:
@@ -203,7 +203,6 @@ def main():
 def interrupt(signal_num, stack_frame):
     global run
     if run:
-        print("Interrupt signal received.")
         run = False
     else:
         print("Emergency shutdown - got second interrupt")
