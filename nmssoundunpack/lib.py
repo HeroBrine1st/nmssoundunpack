@@ -54,9 +54,9 @@ def count_files_in_psarc(psarc_path: Path):
         while p.stdout.readline():
             files += 1
         p.stdout.close()
-        if (returncode := p.wait()) != 0:
-            print(f"Command {command} returned non-zero status code {returncode}")
-            exit(returncode)
+        if (return_code := p.wait()) != 0:
+            print(f"Command {command} returned non-zero status code {return_code}")
+            exit(return_code)
     except Exception:
         raise
     return files
@@ -69,9 +69,9 @@ def unpack_psarc(psarc_path: Path, unpack_dir: Path, on_line: Callable[[str], No
         while line := p.stdout.readline():
             on_line(line)
         p.stdout.close()
-        if (returncode := p.wait()) != 0:
-            print(f"Command {command} returned non-zero status code {returncode}")
-            exit(returncode)
+        if (return_code := p.wait()) != 0:
+            print(f"Command {command} returned non-zero status code {return_code}")
+            exit(return_code)
     except BaseException:
         shutil.rmtree(unpack_dir)  # Likely corrupted
         raise
