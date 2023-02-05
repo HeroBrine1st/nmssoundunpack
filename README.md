@@ -3,8 +3,9 @@ Automatically unpack, convert and catalog No Man's Sky sound assets
 
 # Installation
 
-1. Run ``pip install git+https://github.com/HeroBrine1st/nmssoundunpack.git``
-2. Install wine to your system (ignore if you're installing on windows)
+1. Install Git
+2. Run ``pip install git+https://github.com/HeroBrine1st/nmssoundunpack.git``
+3. Install wine to your system unless you're windows fan.
 
 # Usage
 
