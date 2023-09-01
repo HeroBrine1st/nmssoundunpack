@@ -1,3 +1,8 @@
+# Archived
+NMS internal assets are severely changed, meaning cataloging code requires the same severe changes, and I have no time (rather motivation) to analyze changes and reimplement it. Also it means dropping backwards compatibility.
+
+The code is actual as of January 2023 (tested as important part of development). You can still use it for pre-Endurance (not tested), NEXT (tested) and Legacy (tested).
+
 # No Man's Sky Sound Unpacker
 Automatically unpack, convert and catalog No Man's Sky sound assets
 
